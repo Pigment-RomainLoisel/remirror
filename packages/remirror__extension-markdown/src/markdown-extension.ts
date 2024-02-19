@@ -133,7 +133,7 @@ export class MarkdownExtension extends PlainExtension<MarkdownOptions> {
   private markdownToProsemirrorNode(options: StringHandlerOptions): ProsemirrorNode | Fragment {
     return this.store.stringHandlers.html({
       ...(options as NodeStringHandlerOptions),
-      content: this.options.markdownToHtml(options.content, this.options.htmlSanitizer),
+      content: this.options.htmlSanitizer(this.options.markdownToHtml(options.content)),
     });
   }
 
@@ -166,7 +166,7 @@ export class MarkdownExtension extends PlainExtension<MarkdownOptions> {
   ): CommandFunction {
     return (props) => {
       const { state } = props;
-      let html = this.options.markdownToHtml(markdown, this.options.htmlSanitizer);
+      let html = this.options.htmlSanitizer(this.options.markdownToHtml(markdown));
 
       html =
         !options?.alwaysWrapInBlock && html.startsWith('<p><') && html.endsWith('</p>\n')
